@@ -1,19 +1,48 @@
 # Private Knowledge Q&A System
 
-A RAG (Retrieval-Augmented Generation) system for private document querying using FastAPI, React (Vite), and Google Gemini.
+RAG-based document Q&A application with session isolation.
 
-## Features
-- **Local Document Storage**: Upload and query `.txt` files.
-- **Session Isolation**: Your data is isolated to your browser session. Laptop and mobile devices will have their own private knowledge bases.
-- **Clean UI**: Modern, responsive dark-themed interface.
+## How to Run
 
-## Security & Privacy
-> [!IMPORTANT]
-> This application implements **Session Isolation** for privacy, not production-grade authentication.
->
-> - Documents are isolated using a client-generated `X-Session-ID` stored in your browser's `localStorage`.
-> - This prevents accidental sharing of documents between different users or devices.
-> - **Note**: This design is appropriate for a take-home/personal project but can be spoofed by anyone with knowledge of your session ID. It does not use JWT or OAuth.
+### Backend
+```bash
+cd backend
+pip install -r requirements.txt
+# Create .env with GOOGLE_API_KEY
+uvicorn app.main:app --reload
+```
 
-## Deployment
-See [DEPLOYMENT.md](DEPLOYMENT.md) for instructions on hosting this for free on Render and Vercel.
+### Frontend
+```bash
+cd frontend
+npm install
+# Create .env with VITE_API_URL=http://localhost:8000/api
+npm run dev
+```
+
+## What is Done
+
+- Document upload (.txt files, max 10MB, limit 5 per session)
+- Text chunking (500 chars, 50 char overlap)
+- RAG pipeline with Google Gemini (text-embedding-004 + gemini-1.5-flash)
+- Q&A with citations (shows source file, snippet, similarity score)
+- Session isolation using X-Session-ID header
+- Health monitoring page
+- Deployed to Render (backend) + Vercel (frontend)
+
+## What is Not Done
+
+- Persistent database (uses in-memory storage with JSON backup)
+- User authentication (session isolation only, not secure)
+- PDF/DOCX support (only .txt files)
+- Document deletion UI
+- Production-grade security
+
+## Live Links
+
+- Frontend: https://knowledge-qa-app.vercel.app
+- Backend: https://knowledge-qa-app.onrender.com
+
+## Notes
+
+This is a demo project. Render free tier has cold starts (~30-60s) and ephemeral storage (data resets on redeploy).

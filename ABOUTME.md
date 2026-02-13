@@ -1,11 +1,17 @@
 # About Me
 
-**Name**: [Your Name]
+## Yash Manocha
 
-**Resume**: [Link to Resume or "Attached in email"]
+**Contact:** yashmanocha19@gmail.com | Delhi, India
 
-## Note to Reviewer
-I chose to build this using a "Raw" approach (no heavy RAG frameworks) to demonstrate:
-1.  Understanding of the underlying linear algebra (Cosine Similarity).
-2.  Ability to architect a clean, modular backend without dependencies.
-3.  Focus on production readiness (deployment, error handling, security) over feature bloat.
+**GitHub:** github.com/ymanocha | **LinkedIn:** https://www.linkedin.com/in/yash-manocha-21651928a/
+
+---
+
+## Resume
+
+Resume available at: https://drive.google.com/file/d/1sp2eK-VsTKkvkXPIxNvWn-09M14U0QwF/view?usp=sharing
+
+---
+
+**Applying for:** Full Stack Developer (AI-Native Workflows) at Aggroso
