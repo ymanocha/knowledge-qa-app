@@ -16,7 +16,7 @@ This file documents the key prompts used during application development, organiz
 
 "Write cosine similarity function with normalized vectors using numpy for document retrieval"
 
-"Create OpenAI API wrapper for text-embedding-3-small (embeddings) and gpt-4o-mini (chat completion)"
+"Create Gemini API wrapper for text-embedding-004 (embeddings) and gemini-1.5-flash (chat completion)"
 
 ### Frontend Components
 "Build UploadDropzone component with drag-and-drop file upload and client-side validation"
@@ -52,54 +52,17 @@ Frontend is calling /upload but route expects /api/upload"
 "The upload works correctly but i think there is a major issue. when i upload it on pc and refresh the site on my phone it comes up also on my phone. shouldnt it be private sessions? why can i see my laptops uploaded file on my phone"
 
 ### Implementation Requirements
-"Your session isolation proposal is directionally correct but incomplete and has architectural gaps.
+"Implement session isolation for privacy:
+- Frontend should generate a UUID and store it in sessionStorage
+- Add X-Session-ID header to all API requests (upload, query, get documents, delete)
+- Backend needs to validate this header is present, reject requests without it
+- Store session_id with each document chunk in the vector store
+- Filter all searches and retrievals by session_id so users only see their own documents
+- Handle backward compatibility - if old documents don't have session_id, ignore them safely
+- Make sure this doesn't crash if storage.json has legacy documents
+- Keep it simple, no authentication system needed, just session separation"
 
-Please refine the implementation plan with the following corrections and constraints.
-
-CONTEXT:
-The current system uses a global in-memory vector store. We are introducing session-level isolation using a frontend-generated UUID passed via X-Session-ID header.
-
-DO NOT:
-- Add authentication systems (no JWT, no login, no OAuth)
-- Add databases
-- Add external services
-- Expand scope beyond session isolation
-- Increase overall complexity
-
-STRICT REQUIREMENTS TO FIX:
-
-1️⃣ Enforce Session ID Presence
-- All relevant routes MUST reject requests missing X-Session-ID with HTTP 400
-- Add a reusable helper function for extracting and validating session_id
-
-2️⃣ Update ALL Relevant Routes
-Include: POST /upload, POST /query, GET /documents, DELETE /documents/{file_id}
-
-3️⃣ Define Explicit Data Structure
-{
-  "id": int,
-  "text": str,
-  "vector": list,
-  "source": str,
-  "session_id": str
-}
-
-4️⃣ Retrieval Safety
-- Filter documents by session_id BEFORE cosine similarity
-- Use safe access (doc.get("session_id")) to avoid crashes
-- Maintain Top-K = 3 logic
-
-5️⃣ JSON Persistence Backward Compatibility
-- Handle legacy records without session_id safely
-- No crashes allowed
-
-6️⃣ README Clarification
-- State this is session isolation, not authentication
-- X-Session-ID can be spoofed
-- Appropriate for take-home, not production-grade security
-
-7️⃣ Keep It Lightweight
-- Implementable in under 1-1.5 hours"
+"Add a helper function to extract and validate session_id from headers instead of duplicating code in each route"
 
 ---
 
@@ -117,9 +80,9 @@ Include: POST /upload, POST /query, GET /documents, DELETE /documents/{file_id}
 ## Technical Decisions Made
 
 Throughout development, the following key technical choices were made:
-- **Direct OpenAI API** over LangChain for transparency and simplicity
+- **Direct Gemini API** for transparency and simplicity
 - **In-memory storage with JSON persistence** for demo purposes
 - **Session-based isolation** using UUID headers for privacy without authentication
-- **Render + Vercel** for free hosting over Docker deployment
-- **gpt-4o-mini** for chat completion (cost-effective with good quality)
-- **text-embedding-3-small** for embeddings (fast and efficient)
+- **Render + Vercel** for free hosting
+- **gemini-1.5-flash** for chat completion (fast and cost-effective)
+- **text-embedding-004** for embeddings
