@@ -32,7 +32,7 @@ const UploadDropzone = ({ onUploadSuccess }) => {
         formData.append('file', file);
 
         try {
-            await post('/upload', formData, {
+            await post('/api/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -45,6 +45,7 @@ const UploadDropzone = ({ onUploadSuccess }) => {
             setTimeout(() => setUploadStatus('idle'), 3000);
         } catch (err) {
             setUploadStatus('error');
+            console.error("Upload error details:", err);
         }
     };
 
