@@ -30,7 +30,7 @@ const ChatInterface = () => {
 
         try {
             // Optimistic UI handled by loading state in UI
-            const response = await post('/query', { question: userMsg.content, k: 3 });
+            const response = await post('/api/query', { question: userMsg.content, k: 3 });
 
             const botMsg = {
                 role: 'assistant',
@@ -58,10 +58,10 @@ const ChatInterface = () => {
                         )}
 
                         <div className={`max-w-[80%] rounded-2xl p-4 ${msg.role === 'user'
-                                ? 'bg-blue-600 text-white rounded-br-none'
-                                : msg.role === 'error'
-                                    ? 'bg-red-900/20 border border-red-800 text-red-200'
-                                    : 'bg-slate-800/50 border border-slate-800 text-slate-100 rounded-bl-none'
+                            ? 'bg-blue-600 text-white rounded-br-none'
+                            : msg.role === 'error'
+                                ? 'bg-red-900/20 border border-red-800 text-red-200'
+                                : 'bg-slate-800/50 border border-slate-800 text-slate-100 rounded-bl-none'
                             }`}>
                             <div className="prose prose-invert prose-sm">
                                 {msg.role === 'assistant' || msg.role === 'system' ? (

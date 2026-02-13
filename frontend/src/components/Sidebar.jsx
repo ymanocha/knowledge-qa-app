@@ -11,7 +11,7 @@ const Sidebar = () => {
 
     const fetchDocuments = async () => {
         try {
-            const docs = await get('/documents');
+            const docs = await get('/api/documents');
             setDocuments(docs || []);
         } catch (err) {
             console.error("Failed to fetch documents", err);
@@ -25,7 +25,7 @@ const Sidebar = () => {
 
         setDeletingId(id);
         try {
-            await remove(`/documents/${id}`);
+            await remove(`/api/documents/${id}`);
             await fetchDocuments();
         } catch (err) {
             console.error("Delete failed", err);

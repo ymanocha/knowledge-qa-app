@@ -10,7 +10,7 @@ const StatusPage = () => {
 
     const checkHealth = async () => {
         try {
-            const data = await get('/health');
+            const data = await get('/api/health');
             setHealth(data);
             setLastChecked(new Date().toLocaleTimeString());
         } catch (err) {
