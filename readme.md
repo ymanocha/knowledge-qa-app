@@ -1,61 +1,19 @@
-# Private Knowledge Q&A
+# Private Knowledge Q&A System
 
-A robust, AI-native full-stack application for querying private text documents. Built with FastAPI, React, and Google Gemini.
+A RAG (Retrieval-Augmented Generation) system for private document querying using FastAPI, React (Vite), and Google Gemini.
 
 ## Features
-- **Secure Uploads**: rigorous validation for text files (Size, Type, Binary Content).
-- **RAG Engine**: Custom in-memory vector store with explicit cosine similarity and Top-3 retrieval.
-- **Precision Citations**: Answers include exact text snippets, source filenames, and confidence scores.
-- **System Health**: Dedicated status page for Backend, Storage, and LLM connectivity.
+- **Local Document Storage**: Upload and query `.txt` files.
+- **Session Isolation**: Your data is isolated to your browser session. Laptop and mobile devices will have their own private knowledge bases.
+- **Clean UI**: Modern, responsive dark-themed interface.
 
-## Tech Stack
-- **Backend**: FastAPI, NumPy (Vector Math), Google Gemini API.
-- **Frontend**: React (Vite), Tailwind CSS, Lucide React.
-- **Deployment**: Render (Backend) + Vercel (Frontend).
+## Security & Privacy
+> [!IMPORTANT]
+> This application implements **Session Isolation** for privacy, not production-grade authentication.
+>
+> - Documents are isolated using a client-generated `X-Session-ID` stored in your browser's `localStorage`.
+> - This prevents accidental sharing of documents between different users or devices.
+> - **Note**: This design is appropriate for a take-home/personal project but can be spoofed by anyone with knowledge of your session ID. It does not use JWT or OAuth.
 
-## Quick Start (Local)
-
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- Google Gemini API Key
-
-### Backend
-1. `cd backend`
-2. `python -m venv venv`
-3. `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux)
-4. `pip install -r requirements.txt`
-5. Copy `.env.example` to `.env` and add your `GOOGLE_API_KEY`.
-6. Run server: `uvicorn app.main:app --reload`
-   - API Docs: http://localhost:8000/docs
-
-### Frontend
-1. `cd frontend`
-2. `npm install`
-3. Create `.env` with `VITE_API_URL=http://localhost:8000/api`
-4. Run app: `npm run dev`
-   - App: http://localhost:5173
-
-## Deployment Guide
-
-### Backend (Render)
-1. Create a new Web Service on Render connected to this repo.
-2. Root Directory: `backend`
-3. Build Command: `pip install -r requirements.txt`
-4. Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-5. Add Environment Variable: `OPENAI_API_KEY`, `PYTHON_VERSION=3.11.0`
-
-### Frontend (Vercel)
-1. Import project to Vercel.
-2. Root Directory: `frontend`
-3. Framework Preset: Vite
-4. Add Environment Variable: `VITE_API_URL` (Your Render Backend URL + `/api`)
-
-## Logic & Architecture
-- **In-Memory Store**: Uses an efficient list of dictionaries for document storage. 
-- **Cosine Similarity**: `np.dot(a, b) / (norm(a) * norm(b))` used for accurate semantic retrieval.
-- **Chunking**: Sliding window (500 chars size, 50 chars overlap) to preserve context.
-
-## Limitations
-- **Persistence on Render**: The free tier of Render does not support persistent disks. `storage.json` will be wiped on every deployment or restart.
-- **File Support**: Currently restricted to `.txt` files for security and simplicity.
+## Deployment
+See [DEPLOYMENT.md](DEPLOYMENT.md) for instructions on hosting this for free on Render and Vercel.
